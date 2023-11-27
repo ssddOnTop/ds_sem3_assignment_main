@@ -1,12 +1,12 @@
-use anyhow::Result;
 use crate::cli::CLIError;
+use anyhow::Result;
 
-mod coordinate_parser;
 mod cli;
 mod computation;
 mod config;
+mod coordinate_parser;
 
-fn main() -> Result<()>{
+fn main() -> Result<()> {
     let result = cli::run();
     match result {
         Ok(_) => {}
