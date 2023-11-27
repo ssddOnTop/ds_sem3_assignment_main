@@ -12,3 +12,6 @@ log = "0.4.20"
 env_logger = "0.10.1"
 serde = "1.0.193"
 serde_json = {version = "1.0.108", features = []}
+colored = "2.0.4"
+thiserror = "1.0.50"
+derive_setters = "0.1.6"
