@@ -39,11 +39,12 @@ impl Config {
         }
         let coordinates = compute::compute(&v.into_iter().collect(), self.head);
         let mut val = vec![];
-        for coordinate in coordinates {
+        for (coordinate, dist) in coordinates {
             let mut v = Map::new();
             v.insert("location".to_string(), Value::String(self.get(&coordinate)));
             v.insert("latitude".to_string(), Value::String(coordinate.get_lat().to_string()));
             v.insert("longitude".to_string(), Value::String(coordinate.get_long().to_string()));
+            v.insert("dist".to_string(), Value::String(dist.to_string()));
             val.push(Value::Object(v));
         }
         Value::Array(val)

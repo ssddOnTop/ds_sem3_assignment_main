@@ -16,14 +16,12 @@ pub fn compute_conf(files: Iter<String>) -> Result<Config> {
     Ok(config)
 }
 
-pub fn compute(points: &HashSet<Coordinates>, start: Coordinates) -> Vec<Coordinates> {
+pub fn compute(points: &HashSet<Coordinates>, start: Coordinates) -> Vec<(Coordinates,f64)> {
     let mut unvisited = points.clone();
     let mut path = Vec::with_capacity(points.len());
     let mut current_point = start;
-
     while !unvisited.is_empty() {
         unvisited.remove(&current_point);
-        path.push(current_point);
 
         let next_point = unvisited
             .iter()
@@ -34,10 +32,15 @@ pub fn compute(points: &HashSet<Coordinates>, start: Coordinates) -> Vec<Coordin
                     .unwrap()
             })
             .unwrap_or(&start);
+        path.push((current_point, start.dist(&current_point)));
         current_point = *next_point;
     }
-    path.push(start);
+    path.push((start, 0.0));
     path
+}
+
+fn get_dist(p0: &Coordinates, p1: &&Coordinates) -> f64 {
+    p0.dist(p1)
 }
 
 fn get_content(p0: &mut String, p1: &String) -> Result<()> {

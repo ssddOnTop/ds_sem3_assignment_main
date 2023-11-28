@@ -1,10 +1,9 @@
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use crate::cli::command::{Cli, Command};
 use crate::computation::compute::compute_conf;
 use anyhow::Result;
 use clap::Parser;
 use log::Level;
-use tokio::sync::RwLock;
 use crate::web::handeler;
 
 pub async fn run() -> Result<()> {
@@ -19,7 +18,7 @@ pub async fn run() -> Result<()> {
                 .init();
             let config = compute_conf(file_path.iter())?;
             log::info!("Started server at port 8080");
-            handeler::init(Arc::new(RwLock::new(config))).await?;
+            handeler::init(Arc::new(Mutex::new(config))).await?;
         }
         Command::Check { file_path: _ } => {}
     }

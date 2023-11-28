@@ -1,11 +1,10 @@
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use anyhow::anyhow;
 use hyper::service::{make_service_fn, service_fn};
-use tokio::sync::RwLock;
 use crate::config::from_config::Config;
 use crate::web::http::{handle_http};
 
-pub async fn init(config: Arc<RwLock<Config>>) -> anyhow::Result<()>{
+pub async fn init(config: Arc<Mutex<Config>>) -> anyhow::Result<()>{
     let make_svc = make_service_fn(|_conn| {
         let config =Arc::clone(&config);
         async {
