@@ -23,6 +23,15 @@ impl Hash for Coordinates {
 }
 
 impl Coordinates {
+
+    pub fn get_lat(&self) -> f64 {
+        self.latitude
+    }
+
+    pub fn get_long(&self) -> f64 {
+        self.longitude
+    }
+
     pub fn dist(&self, coord2: &Coordinates) -> f64 {
         let delta_lat = (coord2.latitude - self.latitude).to_radians();
         let delta_lon = (coord2.longitude - self.longitude).to_radians();

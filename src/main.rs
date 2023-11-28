@@ -5,9 +5,10 @@ mod cli;
 mod computation;
 mod config;
 mod coordinate_parser;
-
-fn main() -> Result<()> {
-    let result = cli::run();
+pub mod web;
+#[tokio::main]
+async fn main() -> Result<()> {
+    let result = cli::run().await;
     match result {
         Ok(_) => {}
         Err(error) => {

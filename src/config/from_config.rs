@@ -1,7 +1,7 @@
 use crate::computation::compute;
 use crate::coordinate_parser::cparser::Coordinates;
 use anyhow::{anyhow, Result};
-use serde_json::Value;
+use serde_json::{Map, Value};
 use std::collections::HashMap;
 
 #[derive(Clone, Debug, Default)]
@@ -26,14 +26,26 @@ impl Config {
         }
         Ok(())
     }
+    pub fn pl(&self) -> usize {
+        self.paths.len()
+    }
     pub fn get(&self, coordinates: &Coordinates) -> String {
         self.paths.get(coordinates).unwrap().clone()
     }
-    pub fn compute(&self) -> Vec<Coordinates> {
+    pub fn compute(&self) -> Value {
         let mut v = vec![];
         for k in self.paths.keys() {
             v.push(*k);
         }
-        compute::compute(&v.into_iter().collect(), self.head)
+        let coordinates = compute::compute(&v.into_iter().collect(), self.head);
+        let mut val = vec![];
+        for coordinate in coordinates {
+            let mut v = Map::new();
+            v.insert("location".to_string(), Value::String(self.get(&coordinate)));
+            v.insert("latitude".to_string(), Value::String(coordinate.get_lat().to_string()));
+            v.insert("longitude".to_string(), Value::String(coordinate.get_long().to_string()));
+            val.push(Value::Object(v));
+        }
+        Value::Array(val)
     }
 }
